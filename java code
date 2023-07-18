@@ -1,0 +1,127 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class AddressBook {
+    private List<Contact> contacts;
+
+    public AddressBook() {
+        this.contacts = new ArrayList<>();
+    }
+
+    public void addContact(Contact contact) {
+        contacts.add(contact);
+        System.out.println("Contact added: " + contact);
+    }
+
+    public void removeContact(String name) {
+        Contact contact = searchContact(name);
+        if (contact != null) {
+            contacts.remove(contact);
+            System.out.println("Contact removed: " + contact);
+        } else {
+            System.out.println("Contact not found.");
+        }
+    }
+
+    public Contact searchContact(String name) {
+        for (Contact contact : contacts) {
+            if (contact.getName().equalsIgnoreCase(name)) {
+                return contact;
+            }
+        }
+        return null;
+    }
+
+    public void displayAllContacts() {
+        System.out.println("Contacts:");
+        for (Contact contact : contacts) {
+            System.out.println(contact);
+        }
+    }
+
+    public static void main(String[] args) {
+        AddressBook addressBook = new AddressBook();
+        Scanner scanner = new Scanner(System.in);
+
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("Address Book System");
+            System.out.println("1. Add Contact");
+            System.out.println("2. Remove Contact");
+            System.out.println("3. Search Contact");
+            System.out.println("4. Display All Contacts");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Add Contact");
+                    System.out.print("Enter name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter phone number: ");
+                    String phoneNumber = scanner.nextLine();
+                    System.out.print("Enter email address: ");
+                    String emailAddress = scanner.nextLine();
+                    Contact contact = new Contact(name, phoneNumber, emailAddress);
+                    addressBook.addContact(contact);
+                    break;
+                case 2:
+                    System.out.println("Remove Contact");
+                    System.out.print("Enter name of contact to remove: ");
+                    String removeName = scanner.nextLine();
+                    addressBook.removeContact(removeName);
+                    break;
+                case 3:
+                    System.out.println("Search Contact");
+                    System.out.print("Enter name of contact to search: ");
+                    String searchName = scanner.nextLine();
+                    Contact searchedContact = addressBook.searchContact(searchName);
+                    if (searchedContact != null) {
+                        System.out.println("Contact found: " + searchedContact);
+                    } else {
+                        System.out.println("Contact not found.");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Display All Contacts");
+                    addressBook.displayAllContacts();
+                    break;
+                case 5:
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+            System.out.println("----------------------");
+        }
+
+        System.out.println("Thank you for using the Address Book System!");
+        scanner.close();
+    }
+}
+
+class Contact {
+    private String name;
+    private String phoneNumber;
+    private String emailAddress;
+
+    public Contact(String name, String phoneNumber, String emailAddress) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name +
+                ", Phone Number: " + phoneNumber +
+                ", Email Address: " + emailAddress;
+    }
+}
